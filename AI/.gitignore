@@ -1,0 +1,28 @@
+# DriftCast ignores for bulky artifacts and local tooling.
+# Keeps raw data, models, caches, and temp files out of git.
+# Update if you add new cache directories (e.g., data/cache).
+
+.env
+/~
+/.venv
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.log
+
+# Data & model artifacts
+/data/
+/models/
+/wandb/
+notebooks/.ipynb_checkpoints/
+*.nc
+*.npz
+*.zarr
+
+# IDE & OS specific
+.DS_Store
+Thumbs.db
+
+
+igoel/ppo_drift_tensorboard/
+igoel/ppo_drift_model.zip

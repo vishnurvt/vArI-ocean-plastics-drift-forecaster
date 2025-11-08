@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VARI - Save Our Oceans</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <i class="fas fa-water brand-icon"></i>
+                    <h1>VARI</h1>
+                    <span class="tagline">Join the global effort to track ocean plastic</span>
+                </div>
+                <div class="nav-right">
+                    <div class="connection-status" id="connectionStatus">
+                        <span class="status-indicator" id="statusIndicator"></span>
+                        <span id="statusText">Offline</span>
+                    </div>
+                    <div class="user-menu hidden" id="userMenu">
+                        <img src="https://ui-avatars.com/api/?name=User&background=4A90E2&color=fff" 
+                             alt="User" class="user-avatar" id="userAvatar">
+                        <span class="user-name" id="userName">Guest</span>
+                        <button class="btn-icon" id="logoutBtn" title="Logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Welcome/Registration Section -->
+            <section id="welcomeSection" class="welcome-section">
+                <div class="hero-card">
+                    <div class="ocean-animation">
+                        <div class="wave"></div>
+                        <div class="wave"></div>
+                        <div class="wave"></div>
+                    </div>
+                    <div class="hero-content">
+                        <h2>Welcome to VARI</h2>
+                        <p class="hero-text">
+                            Help scientists predict ocean plastic movement by contributing your computer's 
+                            spare processing power. Together, we can help cleanup organizations work more efficiently.
+                        </p>
+                        
+                        <div class="auth-container" id="authContainer">
+                            <div class="auth-tabs">
+                                <button class="auth-tab active" data-tab="register">Join Now</button>
+                                <button class="auth-tab" data-tab="login">Sign In</button>
+                            </div>
+                            
+                            <!-- Registration Form -->
+                            <form id="registrationForm" class="auth-form">
+                                <div class="form-group">
+                                    <label for="clientName">
+                                        <i class="fas fa-user"></i>
+                                        Display Name
+                                    </label>
+                                    <input type="text" id="clientName" required 
+                                           placeholder="Choose a name (e.g., OceanHero123)">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">
+                                        <i class="fas fa-envelope"></i>
+                                        Email (optional)
+                                    </label>
+                                    <input type="email" id="email" 
+                                           placeholder="For updates and achievements">
+                                </div>
+                                <div class="form-group checkbox-group">
+                                    <label>
+                                        <input type="checkbox" id="termsAccept" required>
+                                        I want to help save our oceans
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-large">
+                                    <i class="fas fa-rocket"></i>
+                                    Start Contributing
+                                </button>
+                            </form>
+                            
+                            <!-- Login Form -->
+                            <form id="loginForm" class="auth-form hidden">
+                                <div class="form-group">
+                                    <label for="loginName">
+                                        <i class="fas fa-user"></i>
+                                        Display Name
+                                    </label>
+                                    <input type="text" id="loginName" required 
+                                           placeholder="Your display name">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-large">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Sign In
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="stats-preview">
+                            <div class="stat-preview-item">
+                                <i class="fas fa-users"></i>
+                                <span class="stat-number">2,847</span>
+                                <span class="stat-label">Active Contributors</span>
+                            </div>
+                            <div class="stat-preview-item">
+                                <i class="fas fa-tasks"></i>
+                                <span class="stat-number">1.2M</span>
+                                <span class="stat-label">Tasks Completed</span>
+                            </div>
+                            <div class="stat-preview-item">
+                                <i class="fas fa-globe-americas"></i>
+                                <span class="stat-number">47</span>
+                                <span class="stat-label">Countries</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Dashboard -->
+            <section id="dashboardSection" class="hidden">
+                <!-- Quick Stats Bar -->
+                <div class="quick-stats-bar">
+                    <div class="quick-stat">
+                        <i class="fas fa-trophy"></i>
+                        <span class="quick-stat-value" id="userRank">#9</span>
+                        <span class="quick-stat-label">Global Rank</span>
+                    </div>
+                    <div class="quick-stat">
+                        <i class="fas fa-clock"></i>
+                        <span class="quick-stat-value" id="totalTime">0h</span>
+                        <span class="quick-stat-label">Computing Time</span>
+                    </div>
+                    <div class="quick-stat">
+                        <i class="fas fa-water"></i>
+                        <span class="quick-stat-value" id="oceanArea">0 km²</span>
+                        <span class="quick-stat-label">Ocean Area Analyzed</span>
+                    </div>
+                    <div class="quick-stat">
+                        <i class="fas fa-award"></i>
+                        <span class="quick-stat-value" id="achievements">0</span>
+                        <span class="quick-stat-label">Achievements</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Performance Overview -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Performance Overview</h3>
+                        </div>
+                        <div class="performance-stats">
+                            <div class="perf-stat">
+                                <div class="perf-icon success">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="perf-details">
+                                    <div class="perf-value" id="completedTasks">0</div>
+                                    <div class="perf-label">Tasks Completed</div>
+                                </div>
+                            </div>
+                            <div class="perf-stat">
+                                <div class="perf-icon warning">
+                                    <i class="fas fa-spinner"></i>
+                                </div>
+                                <div class="perf-details">
+                                    <div class="perf-value" id="activeTasks">1</div>
+                                    <div class="perf-label">Active Tasks</div>
+                                </div>
+                            </div>
+                            <div class="perf-stat">
+                                <div class="perf-icon info">
+                                    <i class="fas fa-percentage"></i>
+                                </div>
+                                <div class="perf-details">
+                                    <div class="perf-value" id="successRate">100%</div>
+                                    <div class="perf-label">Success Rate</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contribution-chart">
+                            <canvas id="contributionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Real-time Activity -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-satellite"></i> Real-time Activity</h3>
+                            <span class="live-indicator">
+                                <span class="live-dot"></span> LIVE
+                            </span>
+                        </div>
+                        <div class="activity-feed" id="activityFeed">
+                            <div class="activity-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Waiting for tasks...</span>
+                            </div>
+                        </div>
+                        <div class="current-task" id="currentTask">
+                            <div class="task-info">
+                                <span class="task-label">Current Task:</span>
+                                <span class="task-id">None</span>
+                            </div>
+                            <div class="task-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="taskProgress"></div>
+                                </div>
+                                <span class="progress-text">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Resources -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-microchip"></i> System Resources</h3>
+                        </div>
+                        <div class="resource-monitors">
+                            <div class="resource-item">
+                                <div class="resource-header">
+                                    <span class="resource-label">CPU Usage</span>
+                                    <span class="resource-value" id="cpuUsageText">0%</span>
+                                </div>
+                                <div class="resource-bar">
+                                    <div class="resource-fill cpu-fill" id="cpuUsageFill"></div>
+                                </div>
+                            </div>
+                            <div class="resource-item">
+                                <div class="resource-header">
+                                    <span class="resource-label">Memory Usage</span>
+                                    <span class="resource-value" id="memoryUsageText">0 MB</span>
+                                </div>
+                                <div class="resource-bar">
+                                    <div class="resource-fill memory-fill" id="memoryUsageFill"></div>
+                                </div>
+                            </div>
+                            <div class="resource-item">
+                                <div class="resource-header">
+                                    <span class="resource-label">Network Activity</span>
+                                    <span class="resource-value" id="networkActivity">Idle</span>
+                                </div>
+                                <div class="network-indicator" id="networkIndicator">
+                                    <span class="network-dot"></span>
+                                    <span class="network-dot"></span>
+                                    <span class="network-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="system-info" id="systemInfo">
+                            <div class="info-item">
+                                <i class="fas fa-desktop"></i>
+                                <span id="platformInfo">Loading...</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-memory"></i>
+                                <span id="totalMemory">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controls & Settings -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-cog"></i> Controls</h3>
+                        </div>
+                        <div class="control-buttons">
+                            <button id="pauseBtn" class="btn btn-control btn-pause">
+                                <i class="fas fa-pause"></i>
+                                <span>Pause</span>
+                            </button>
+                            <button id="turboBtn" class="btn btn-control btn-turbo">
+                                <i class="fas fa-bolt"></i>
+                                <span>Turbo Mode</span>
+                            </button>
+                            <button id="settingsBtn" class="btn btn-control">
+                                <i class="fas fa-sliders-h"></i>
+                                <span>Settings</span>
+                            </button>
+                        </div>
+                        <div class="schedule-info">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Running 24/7</span>
+                            <button class="btn-text" id="scheduleBtn">Change Schedule</button>
+                        </div>
+                    </div>
+
+                    <!-- Impact Visualization -->
+                    <!-- <div class="card full-width">
+                        <div class="card-header">
+                            <h3><i class="fas fa-globe"></i> Your Global Impact</h3>
+                        </div>
+                        <div class="impact-container">
+                            <div class="impact-map" id="impactMap">
+                                <div class="map-placeholder">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    <p>Interactive impact map coming soon!</p>
+                                </div>
+                            </div>
+                            <div class="impact-stats">
+                                <div class="impact-stat">
+                                    <i class="fas fa-water"></i>
+                                    <span class="impact-value">42,738</span>
+                                    <span class="impact-label">Particles Tracked</span>
+                                </div>
+                                <div class="impact-stat">
+                                    <i class="fas fa-route"></i>
+                                    <span class="impact-value">1,247 km</span>
+                                    <span class="impact-label">Drift Distance Calculated</span>
+                                </div>
+                                <div class="impact-stat">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span class="impact-value">30 days</span>
+                                    <span class="impact-label">Forecast Range</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- Leaderboard -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-trophy"></i> Top Contributors</h3>
+                            <button class="btn-text" id="viewFullLeaderboard">View All</button>
+                        </div>
+                        <div class="leaderboard" id="leaderboard">
+                            <div class="leaderboard-item">
+                                <span class="rank gold">#1</span>
+                                <img src="https://ui-avatars.com/api/?name=LK&background=FFD700&color=fff"
+                                     alt="User" class="leaderboard-avatar">
+                                <span class="leaderboard-name">Lalith Kothuru</span>
+                                <span class="leaderboard-score">44,367</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank silver">#2</span>
+                                <img src="https://ui-avatars.com/api/?name=PK&background=C0C0C0&color=fff"
+                                     alt="User" class="leaderboard-avatar">
+                                <span class="leaderboard-name">Pranav</span>
+                                <span class="leaderboard-score">23,789</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank bronze">#3</span>
+                                <img src="https://ui-avatars.com/api/?name=IG&background=CD7F32&color=fff"
+                                     alt="User" class="leaderboard-avatar">
+                                <span class="leaderboard-name">Ishaan Goel</span>
+                                <span class="leaderboard-score">12,847</span>
+                            </div>
+                            <div class="leaderboard-item you">
+                                <span class="rank">#9</span>
+                                <img src="https://ui-avatars.com/api/?name=TE&background=4A90E2&color=fff"
+                                     alt="You" class="leaderboard-avatar">
+                                <span class="leaderboard-name">You</span>
+                                <span class="leaderboard-score">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-medal"></i> Recent Achievements</h3>
+                            <button class="btn-text" id="viewAllAchievements">View All</button>
+                        </div>
+                        <div class="achievements-grid">
+                            <div class="achievement unlocked">
+                                <i class="fas fa-flag-checkered"></i>
+                                <span class="achievement-name">First Task</span>
+                            </div>
+                            <div class="achievement unlocked">
+                                <i class="fas fa-clock"></i>
+                                <span class="achievement-name">24 Hour Helper</span>
+                            </div>
+                            <div class="achievement locked">
+                                <i class="fas fa-fire"></i>
+                                <span class="achievement-name">100 Tasks</span>
+                                <span class="achievement-progress">42/100</span>
+                            </div>
+                            <div class="achievement locked">
+                                <i class="fas fa-globe"></i>
+                                <span class="achievement-name">Global Guardian</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Modal -->
+            <div id="settingsModal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-cog"></i> Settings</h3>
+                        <button class="modal-close" id="closeSettings">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="settings-tabs">
+                            <button class="settings-tab active" data-section="performance">Performance</button>
+                            <button class="settings-tab" data-section="schedule">Schedule</button>
+                            <button class="settings-tab" data-section="notifications">Notifications</button>
+                        </div>
+                        
+                        <div id="performanceSettings" class="settings-section">
+                            <h4>Resource Limits</h4>
+                            <div class="form-group">
+                                <label for="maxCpuUsage">
+                                    <i class="fas fa-microchip"></i>
+                                    Maximum CPU Usage
+                                </label>
+                                <div class="slider-group">
+                                    <input type="range" id="maxCpuUsage" min="10" max="100" value="50">
+                                    <span class="slider-value" id="maxCpuValue">50%</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="maxMemoryUsage">
+                                    <i class="fas fa-memory"></i>
+                                    Maximum Memory Usage
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" id="maxMemoryUsage" min="512" max="8192" value="1024">
+                                    <span class="input-addon">MB</span>
+                                </div>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="turboMode">
+                                    <span>Enable Turbo Mode (uses more resources)</span>
+                                </label>
+                            </div>
+
+                            <h4 style="margin-top: 1.5rem;">Battery Saver</h4>
+                            <div class="battery-status" id="batteryStatus">
+                                <i class="fas fa-plug" id="batteryIcon"></i>
+                                <span id="batteryText">Checking battery status...</span>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="autoPauseOnBattery">
+                                    <span>Auto-pause when on battery power</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="reduceCpuOnBattery">
+                                    <span>Reduce CPU limit to 20% on battery</span>
+                                </label>
+                            </div>
+
+                            <h4 style="margin-top: 1.5rem;">Smart Pause</h4>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="enableSmartPause">
+                                    <span>Enable smart pause when system is busy</span>
+                                </label>
+                            </div>
+                            <div class="form-group" id="smartPauseOptions" style="display: none;">
+                                <label for="pauseCpuThreshold">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Pause when system CPU exceeds
+                                </label>
+                                <div class="slider-group">
+                                    <input type="range" id="pauseCpuThreshold" min="60" max="90" value="75">
+                                    <span class="slider-value" id="pauseCpuValue">75%</span>
+                                </div>
+                            </div>
+                            <div class="form-group" id="smartResumeOptions" style="display: none;">
+                                <label for="resumeCpuThreshold">
+                                    <i class="fas fa-check-circle"></i>
+                                    Resume when system CPU drops below
+                                </label>
+                                <div class="slider-group">
+                                    <input type="range" id="resumeCpuThreshold" min="30" max="60" value="40">
+                                    <span class="slider-value" id="resumeCpuValue">40%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="scheduleSettings" class="settings-section hidden">
+                            <h4>Processing Schedule</h4>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="alwaysOn" checked>
+                                    <span>Always contribute when computer is idle (24/7)</span>
+                                </label>
+                            </div>
+
+                            <div id="customScheduleSection" style="display: none;">
+                                <h4 style="margin-top: 1.5rem;">Quick Presets</h4>
+                                <div class="schedule-presets">
+                                    <button type="button" class="btn btn-secondary btn-sm" id="presetNights">
+                                        <i class="fas fa-moon"></i> Nights Only
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm" id="presetWeekends">
+                                        <i class="fas fa-calendar-weekend"></i> Weekends
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm" id="presetOffHours">
+                                        <i class="fas fa-business-time"></i> Off Work Hours
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm" id="presetClear">
+                                        <i class="fas fa-eraser"></i> Clear All
+                                    </button>
+                                </div>
+
+                                <h4 style="margin-top: 1.5rem;">Custom Schedule</h4>
+                                <p class="help-text">Click and drag to select active hours</p>
+                                <div class="schedule-grid-container" id="scheduleGrid">
+                                    <!-- Schedule grid will be generated by JavaScript -->
+                                </div>
+
+                                <div class="schedule-status">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span id="scheduleStatusText">Currently in scheduled time</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="notificationSettings" class="settings-section hidden">
+                            <h4>Notifications</h4>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="achievementNotifs" checked>
+                                    <span>Achievement unlocked</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="milestoneNotifs" checked>
+                                    <span>Milestone reached</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="leaderboardNotifs">
+                                    <span>Leaderboard updates</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="cancelSettings">Cancel</button>
+                        <button class="btn btn-primary" id="saveSettings">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Achievements Modal -->
+        <div id="achievementsModal" class="modal hidden">
+            <div class="modal-content achievements-modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-trophy"></i> Your Achievements</h3>
+                    <button class="modal-close" id="closeAchievements">&times;</button>
+                </div>
+                <div class="modal-body achievements-body">
+                    <!-- Computing Time Tiers -->
+                    <div class="achievement-section">
+                        <h4><i class="fas fa-medal"></i> Contribution Tiers</h4>
+                        <div class="achievement-tiers">
+                            <div class="achievement-tier bronze" data-tier="bronze">
+                                <div class="tier-icon">🥉</div>
+                                <div class="tier-info">
+                                    <h5>Bronze Guardian</h5>
+                                    <p class="tier-requirement">1 hour computing time</p>
+                                    <div class="tier-progress">
+                                        <div class="tier-progress-bar">
+                                            <div class="tier-progress-fill" id="bronzeProgress"></div>
+                                        </div>
+                                        <span class="tier-progress-text" id="bronzeText">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="achievement-tier silver locked" data-tier="silver">
+                                <div class="tier-icon">🥈</div>
+                                <div class="tier-info">
+                                    <h5>Silver Guardian</h5>
+                                    <p class="tier-requirement">10 hours computing time</p>
+                                    <div class="tier-progress">
+                                        <div class="tier-progress-bar">
+                                            <div class="tier-progress-fill" id="silverProgress"></div>
+                                        </div>
+                                        <span class="tier-progress-text" id="silverText">Locked</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="achievement-tier gold locked" data-tier="gold">
+                                <div class="tier-icon">🥇</div>
+                                <div class="tier-info">
+                                    <h5>Gold Guardian</h5>
+                                    <p class="tier-requirement">1 week (168 hours)</p>
+                                    <div class="tier-progress">
+                                        <div class="tier-progress-bar">
+                                            <div class="tier-progress-fill" id="goldProgress"></div>
+                                        </div>
+                                        <span class="tier-progress-text" id="goldText">Locked</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="achievement-tier platinum locked" data-tier="platinum">
+                                <div class="tier-icon">💎</div>
+                                <div class="tier-info">
+                                    <h5>Platinum Guardian</h5>
+                                    <p class="tier-requirement">1 month (720 hours)</p>
+                                    <div class="tier-progress">
+                                        <div class="tier-progress-bar">
+                                            <div class="tier-progress-fill" id="platinumProgress"></div>
+                                        </div>
+                                        <span class="tier-progress-text" id="platinumText">Locked</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="achievement-tier diamond locked" data-tier="diamond">
+                                <div class="tier-icon">💠</div>
+                                <div class="tier-info">
+                                    <h5>Diamond Guardian</h5>
+                                    <p class="tier-requirement">3 months (2,160 hours)</p>
+                                    <div class="tier-progress">
+                                        <div class="tier-progress-bar">
+                                            <div class="tier-progress-fill" id="diamondProgress"></div>
+                                        </div>
+                                        <span class="tier-progress-text" id="diamondText">Locked</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Avatar Selection -->
+                    <div class="achievement-section">
+                        <h4><i class="fas fa-user-circle"></i> Ocean Avatars</h4>
+                        <p class="help-text">Unlock avatars by reaching new tiers!</p>
+                        <div class="avatar-grid" id="avatarGrid">
+                            <!-- Avatars will be generated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Real-World Impact -->
+                    <div class="achievement-section">
+                        <h4><i class="fas fa-globe-americas"></i> Your Real-World Impact</h4>
+                        <p class="help-text">See how your computing power is making a difference!</p>
+
+                        <div class="impact-metrics-grid">
+                            <div class="impact-metric-card ocean">
+                                <div class="impact-icon">🌊</div>
+                                <div class="impact-number" id="impactOceanArea">0</div>
+                                <div class="impact-label">km² of ocean analyzed</div>
+                            </div>
+
+                            <div class="impact-metric-card plastic">
+                                <div class="impact-icon">♻️</div>
+                                <div class="impact-number" id="impactPlasticSaved">0</div>
+                                <div class="impact-label">tons cleanup optimized</div>
+                            </div>
+
+                            <div class="impact-metric-card time">
+                                <div class="impact-icon">⏱️</div>
+                                <div class="impact-number" id="impactSearchHours">0</div>
+                                <div class="impact-label">hours search time saved</div>
+                            </div>
+
+                            <div class="impact-metric-card beaches">
+                                <div class="impact-icon">🏖️</div>
+                                <div class="impact-number" id="impactBeaches">0</div>
+                                <div class="impact-label">beaches worth of analysis</div>
+                            </div>
+                        </div>
+
+                        <div class="impact-comparison">
+                            <div class="comparison-header">
+                                <i class="fas fa-users"></i>
+                                <h5>Community Impact</h5>
+                            </div>
+                            <div class="comparison-content">
+                                <p class="comparison-stat">
+                                    Our <strong id="communityMembers">2,847</strong> volunteers =
+                                    <strong id="researchVessels">120</strong> research vessels worth of computing power
+                                </p>
+                                <p class="comparison-detail">
+                                    Together we've analyzed <strong id="totalCommunityArea">1.2M km²</strong> of ocean -
+                                    equivalent to the entire Mediterranean Sea!
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Social Sharing -->
+                        <div class="social-sharing">
+                            <h5><i class="fas fa-share-alt"></i> Share Your Impact</h5>
+                            <p class="help-text">Inspire others to join the movement!</p>
+
+                            <div class="share-preview" id="sharePreview">
+                                <div class="share-card">
+                                    <div class="share-card-header">
+                                        <div class="share-logo">🌊 VARI</div>
+                                    </div>
+                                    <div class="share-card-content">
+                                        <div class="share-stat-large" id="shareMainStat">0 km²</div>
+                                        <p class="share-message" id="shareMessage">
+                                            I helped analyze ocean plastic drift patterns!
+                                        </p>
+                                        <div class="share-substats">
+                                            <span id="shareSubstat1">0 tasks</span> •
+                                            <span id="shareSubstat2">0 hours</span>
+                                        </div>
+                                    </div>
+                                    <div class="share-card-footer">
+                                        Join the movement at DriftCast.org
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="share-buttons">
+                                <button class="btn-share twitter" id="shareTwitter">
+                                    <i class="fab fa-twitter"></i> Share on Twitter
+                                </button>
+                                <button class="btn-share linkedin" id="shareLinkedIn">
+                                    <i class="fab fa-linkedin"></i> Share on LinkedIn
+                                </button>
+                                <button class="btn-share facebook" id="shareFacebook">
+                                    <i class="fab fa-facebook"></i> Share on Facebook
+                                </button>
+                                <button class="btn-share download" id="downloadCard">
+                                    <i class="fas fa-download"></i> Download Card
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Referral Program -->
+                        <div class="referral-section">
+                            <div class="referral-header">
+                                <div class="referral-icon">🎁</div>
+                                <div class="referral-content">
+                                    <h5>Multiply Your Impact</h5>
+                                    <p>Invite friends and earn bonus rewards!</p>
+                                </div>
+                            </div>
+                            <div class="referral-stats">
+                                <div class="referral-stat">
+                                    <span class="referral-number" id="referralCount">0</span>
+                                    <span class="referral-label">Friends invited</span>
+                                </div>
+                                <div class="referral-stat">
+                                    <span class="referral-number" id="referralBonus">0</span>
+                                    <span class="referral-label">Bonus points earned</span>
+                                </div>
+                            </div>
+                            <div class="referral-link">
+                                <input type="text" readonly value="https://driftcast.org/join?ref=ABC123"
+                                       id="referralLinkInput" class="referral-input">
+                                <button class="btn btn-secondary" id="copyReferralLink">
+                                    <i class="fas fa-copy"></i> Copy Link
+                                </button>
+                            </div>
+                            <p class="referral-incentive">
+                                <i class="fas fa-gift"></i> Earn <strong>500 bonus points</strong> for each friend who joins!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Task-based Achievements -->
+                    <div class="achievement-section">
+                        <h4><i class="fas fa-star"></i> Task Achievements</h4>
+                        <div class="achievements-list">
+                            <div class="achievement-item unlocked" data-id="first-task">
+                                <i class="fas fa-flag-checkered achievement-icon"></i>
+                                <div class="achievement-details">
+                                    <h5>First Wave</h5>
+                                    <p>Complete your first task</p>
+                                </div>
+                                <div class="achievement-badge">✓</div>
+                            </div>
+
+                            <div class="achievement-item locked" data-id="10-tasks">
+                                <i class="fas fa-chart-line achievement-icon"></i>
+                                <div class="achievement-details">
+                                    <h5>Rising Tide</h5>
+                                    <p>Complete 10 tasks</p>
+                                    <div class="achievement-progress-small">
+                                        <span id="tasks10Progress">0/10</span>
+                                    </div>
+                                </div>
+                                <div class="achievement-badge">🔒</div>
+                            </div>
+
+                            <div class="achievement-item locked" data-id="100-tasks">
+                                <i class="fas fa-fire achievement-icon"></i>
+                                <div class="achievement-details">
+                                    <h5>Ocean Warrior</h5>
+                                    <p>Complete 100 tasks</p>
+                                    <div class="achievement-progress-small">
+                                        <span id="tasks100Progress">0/100</span>
+                                    </div>
+                                </div>
+                                <div class="achievement-badge">🔒</div>
+                            </div>
+
+                            <div class="achievement-item locked" data-id="1000-tasks">
+                                <i class="fas fa-crown achievement-icon"></i>
+                                <div class="achievement-details">
+                                    <h5>Ocean Champion</h5>
+                                    <p>Complete 1,000 tasks</p>
+                                    <div class="achievement-progress-small">
+                                        <span id="tasks1000Progress">0/1000</span>
+                                    </div>
+                                </div>
+                                <div class="achievement-badge">🔒</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="closeAchievementsBtn">
+                        <i class="fas fa-check"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab hidden" id="fabHelp" title="Need help?">
+            <i class="fas fa-question"></i>
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="renderer.js"></script>
+</body>
+</html>
